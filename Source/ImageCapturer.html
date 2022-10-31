@@ -10,132 +10,43 @@
 
 	<label>Camera View Size in Pixels:</label>
 	<br />
-	<input id="inputImageSizeX" type="number" value="640"></input>
+	<input id="inputImageSizeX" type="number" value="320"></input>
 	<label>x</label>
-	<input id="inputImageSizeY" type="number" value="480"></input>
+	<input id="inputImageSizeY" type="number" value="240"></input>
 	<br />
 
-	<button onclick="buttonImageCapturer_Initialize_Clicked();">Set Up Camera</button>
+	<button onclick="UiEventHandler.buttonResizeCamera_Clicked();">
+		Resize Camera
+	</button>
 	<br />
 
-	<label>Camera View:</label>
-	<div id="divImage"></div>
+	<div id="divCameraView">
+		<video id="videoCameraView" width="320" height="240" autoplay="true" />
+	</div>
+
+	<button onclick="UiEventHandler.buttonCaptureImage_Clicked();">
+		Capture Image
+	</button>
 	<br />
+
+	<label>Images Captured So Far:</label>
+	<button onclick="UiEventHandler.buttonImageGalleryClear_Clicked();">Clear</button>
+	<br />
+	<div id="divGallery">
+		[none]
+	</div>
 
 </div>
 
+<script type="text/javascript" src="Coords.js"></script>
+<script type="text/javascript" src="ImageCapturedWithTime.js"></script>
+<script type="text/javascript" src="ImageCapturer.js"></script>
+<script type="text/javascript" src="UiEventHandler.js"></script>
+
 <script type="text/javascript">
-
-// UI event handlers.
-
-function buttonImageCapturer_Initialize_Clicked()
-{
-	var d = document;
-	var inputImageSizeX = d.getElementById("inputImageSizeX");
-	var inputImageSizeY = d.getElementById("inputImageSizeY");
-	var sizeInPixels = new Coords
-	(
-		inputImageSizeX.value, inputImageSizeY.value
-	);
-	var imageCapturer = new ImageCapturer(sizeInPixels);
-	imageCapturer.initialize();
-
-}
-
-// classes
-
-class Coords
-{
-	constructor(x, y)
-	{
-		this.x = x;
-		this.y = y;
-	}
-}
-
-class ImageCapturer
-{
-	constructor(sizeInPixels)
-	{
-		this.sizeInPixels = sizeInPixels;
-	}
-
-	captureAndDisplayImage()
-	{
-		var imageCaptured = this.captureImage();
-		this.displayImage(imageCaptured);
-	}
-
-	captureImage()
-	{
-		return this.videoInput;
-	}
-
-	displayImage(imageToDraw)
-	{
-		this.graphics.drawImage
-		(
-			imageToDraw, 
-			0, 0, 
-			this.sizeInPixels.x, this.sizeInPixels.y
-		);
-	}
-
-	initialize()
-	{
-		var d = document;
-
-		var divImageCapturer = d.createElement("div");
-
-		var divInput = d.createElement("div");
-		var videoInput = d.createElement("video");
-		videoInput.width = this.sizeInPixels.x;
-		videoInput.height = this.sizeInPixels.y;
-		videoInput.autoplay = true;
-		divInput.appendChild(videoInput);
-		divImageCapturer.appendChild(divInput);
-		this.videoInput = videoInput;
-
-		var divControls = d.createElement("div");
-		var buttonCaptureImage = d.createElement("button");
-		buttonCaptureImage.onclick = this.captureAndDisplayImage.bind(this);
-		buttonCaptureImage.innerHTML = "Capture Image";
-		divControls.appendChild(buttonCaptureImage);
-		divImageCapturer.appendChild(divControls);
-
-		var divOutput = d.createElement("div");
-		var canvasOutput = d.createElement("canvas");
-		canvasOutput.width = this.sizeInPixels.x;
-		canvasOutput.height = this.sizeInPixels.y;
-		divOutput.appendChild(canvasOutput);
-		divImageCapturer.appendChild(divOutput);
-
-		this.graphics = canvasOutput.getContext("2d");
-
-		navigator.getUserMedia // Formerly "webkitGetUserMedia".
-		( 
-			{ video: true },
-			// success
-			(stream) =>
-			{
-				videoInput.srcObject = stream;
-				videoInput.play();
-			},
-			// error
-			(err) =>
-			{
-				throw err;
-			}
-		);
-
-		var divImage = d.getElementById("divImage");
-		divImage.appendChild(divImageCapturer);
-	}
-
-}
-
-
+	ImageCapturer.Instance().initialize();
 </script>
+
 
 </body>
 </html>
