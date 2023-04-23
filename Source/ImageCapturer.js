@@ -4,6 +4,8 @@ class ImageCapturer
 	constructor()
 	{
 		this.imagesCapturedWithTimes = [];
+
+		this.viewSizeMax = null;
 	}
 
 	static Instance()
@@ -46,12 +48,23 @@ class ImageCapturer
 
 	initialize()
 	{
+		var camera = this;
+
 		navigator.getUserMedia // Formerly "webkitGetUserMedia".
 		( 
 			{ video: true },
 			// success
 			(stream) =>
 			{
+				var cameraCapabilities =
+					stream.getVideoTracks()[0].getCapabilities();
+				var cameraWidthMax = cameraCapabilities.width.max;
+				var cameraHeightMax = cameraCapabilities.height.max;
+				camera.viewSizeMax = new Coords
+				(
+					cameraWidthMax, cameraHeightMax
+				);
+
 				var d = document;
 				var videoCameraView =
 					d.getElementById("videoCameraView");

@@ -1,6 +1,39 @@
 
 class UiEventHandler
 {
+	static buttonCameraViewSizeHalve_Clicked()
+	{
+		var d = document;
+		var inputImageSizeX = d.getElementById("inputImageSizeX");
+		var inputImageSizeY = d.getElementById("inputImageSizeY");
+
+		var viewSizeHalf = new Coords
+		(
+			Math.round(parseInt(inputImageSizeX.value) / 2),
+			Math.round(parseInt(inputImageSizeY.value) / 2)
+		);
+
+		inputImageSizeX.value = viewSizeHalf.x;
+		inputImageSizeY.value = viewSizeHalf.y;
+
+		UiEventHandler.resizeCameraView();
+	}
+
+	static buttonCameraViewSizeMax_Clicked()
+	{
+		var imageCapturer = ImageCapturer.Instance();
+		var viewSizeMax = imageCapturer.viewSizeMax;
+
+		var d = document;
+		var inputImageSizeX = d.getElementById("inputImageSizeX");
+		var inputImageSizeY = d.getElementById("inputImageSizeY");
+
+		inputImageSizeX.value = viewSizeMax.x;
+		inputImageSizeY.value = viewSizeMax.y;
+
+		UiEventHandler.resizeCameraView();
+	}
+
 	static buttonCaptureImage_Clicked()
 	{
 		var d = document;
@@ -34,7 +67,59 @@ class UiEventHandler
 		imageCapturer.draw();
 	}
 
-	static buttonResizeCamera_Clicked()
+	static inputImageSizeX_Changed()
+	{
+		UiEventHandler.preserveAspectRatio(true);
+		UiEventHandler.resizeCameraView();
+	}
+
+	static inputImageSizeY_Changed()
+	{
+		UiEventHandler.preserveAspectRatio(false);
+		UiEventHandler.resizeCameraView();
+	}
+
+	// Helper methods.
+
+	static preserveAspectRatio(dimensionChangedWasXNotY)
+	{
+		var d = document;
+		var inputImageSizeX = d.getElementById("inputImageSizeX");
+		var inputImageSizeY = d.getElementById("inputImageSizeY");
+
+		var imageSizeX = parseInt(inputImageSizeX.value);
+		var imageSizeY = parseInt(inputImageSizeY.value);
+
+		var imageCapturer = ImageCapturer.Instance();
+		var viewSizeMax = imageCapturer.viewSizeMax;
+
+		if (imageSizeX > viewSizeMax.x)
+		{
+			imageSizeX = viewSizeMax.x;
+		}
+
+		else if (imageSizeY > viewSizeMax.y)
+		{
+			imageSizeY = viewSizeMax.y;
+		}
+
+		if (dimensionChangedWasXNotY)
+		{
+			imageSizeY = (imageSizeX / viewSizeMax.x * viewSizeMax.y);
+		}
+		else
+		{
+			imageSizeX = (imageSizeY / viewSizeMax.y * viewSizeMax.x);
+		}
+
+		imageSizeX = Math.round(imageSizeX);
+		imageSizeY = Math.round(imageSizeY);
+
+		inputImageSizeX.value = imageSizeX;
+		inputImageSizeY.value = imageSizeY;
+	}
+
+	static resizeCameraView()
 	{
 		var d = document;
 		var inputImageSizeX = d.getElementById("inputImageSizeX");

@@ -10,18 +10,27 @@
 
 	<label>Camera View Size in Pixels:</label>
 	<br />
-	<input id="inputImageSizeX" type="number" value="320"></input>
+	<input
+		id="inputImageSizeX"
+		type="number"
+		onchange="UiEventHandler.inputImageSizeX_Changed();"
+	/>
 	<label>x</label>
-	<input id="inputImageSizeY" type="number" value="240"></input>
-	<br />
-
-	<button onclick="UiEventHandler.buttonResizeCamera_Clicked();">
-		Resize Camera
+	<input
+		id="inputImageSizeY"
+		type="number"
+		onchange="UiEventHandler.inputImageSizeY_Changed();"
+	/>
+	<button onclick="UiEventHandler.buttonCameraViewSizeMax_Clicked();">
+		Max
+	</button>
+	<button onclick="UiEventHandler.buttonCameraViewSizeHalve_Clicked();">
+		Halve
 	</button>
 	<br />
 
 	<div id="divCameraView">
-		<video id="videoCameraView" width="320" height="240" autoplay="true" />
+		<video id="videoCameraView" autoplay="true" />
 	</div>
 
 	<button onclick="UiEventHandler.buttonCaptureImage_Clicked();">
