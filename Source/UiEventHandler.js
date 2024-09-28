@@ -40,14 +40,15 @@ class UiEventHandler
 
 		var videoCameraView = d.getElementById("videoCameraView");
 		var canvas = d.createElement("canvas");
-		canvas.width = videoCameraView.width;
-		canvas.height = videoCameraView.height;
+		// The plain .width and .height fields started returning zeroes.
+		canvas.width = videoCameraView.videoWidth; 
+		canvas.height = videoCameraView.videoHeight;
 		var graphics = canvas.getContext("2d");
 		graphics.drawImage(
 			videoCameraView,
 			0, 0,
-			videoCameraView.width,
-			videoCameraView.height
+			canvas.width,
+			canvas.height
 		);
 
 		var now = new Date();
