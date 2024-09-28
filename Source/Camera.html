@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<div id="divUi">
+	<h3>Camera</h3>
+
+	<p>Click the button to capture an image from a web-enabled camera.</p>
+
+	<label>Camera View Size in Pixels:</label>
+	<br />
+	<input
+		id="inputImageSizeX"
+		type="number"
+		onchange="UiEventHandler.inputImageSizeX_Changed();"
+	/>
+	<label>x</label>
+	<input
+		id="inputImageSizeY"
+		type="number"
+		onchange="UiEventHandler.inputImageSizeY_Changed();"
+	/>
+	<button onclick="UiEventHandler.buttonCameraViewSizeMax_Clicked();">
+		Max
+	</button>
+	<button onclick="UiEventHandler.buttonCameraViewSizeHalve_Clicked();">
+		Halve
+	</button>
+	<br />
+
+	<div id="divCameraView">
+		<video id="videoCameraView" autoplay="true" />
+	</div>
+
+	<button onclick="UiEventHandler.buttonCaptureImage_Clicked();">
+		Capture Image
+	</button>
+	<br />
+
+	<label>Images Captured So Far:</label>
+	<button onclick="UiEventHandler.buttonImageGalleryClear_Clicked();">Clear</button>
+	<br />
+	<div id="divGallery">
+		[none]
+	</div>
+
+</div>
+
+<script type="text/javascript" src="Coords.js"></script>
+<script type="text/javascript" src="ImageCapturedWithTime.js"></script>
+<script type="text/javascript" src="ImageCapturer.js"></script>
+<script type="text/javascript" src="UiEventHandler.js"></script>
+
+<script type="text/javascript">
+	ImageCapturer.Instance().initialize();
+</script>
+
+
+</body>
+</html>
